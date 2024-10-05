@@ -37,7 +37,12 @@ export default function Header() {
       <div className=" flex justify-between items-center h-[70px] px-5 sm:px-10">
         <motion.div
           initial={{ y: -100 }}
-          animate={{ y: 0 }}
+          animate={{
+            y: 0,
+            transition: {
+              delay: 0.4,
+            },
+          }}
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.8 }}
         >
