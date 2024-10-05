@@ -1,7 +1,11 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from "mongoose";
 
-const conversationSchema = new Schema(
+export interface IConversation extends Document {
+  members: Schema.Types.ObjectId[];
+  messages: [author: Schema.Types.ObjectId, body: String, time: Date];
+}
+
+const conversationSchema = new Schema<IConversation>(
   {
     members: [
       {
