@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ThemeProvider from "@/providers/ThemeProvider";
+import AllProvider from "@/providers/AllProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,11 +20,11 @@ export default function RootLayout({
         className="bg-[#ffffff] text-black dark:bg-[#000000] dark:text-white"
         suppressHydrationWarning
       >
-        <ThemeProvider>
+        <AllProvider>
           <Header />
           <main className=" mt-28">{children}</main>
           <Footer />
-        </ThemeProvider>
+        </AllProvider>
       </body>
     </html>
   );
