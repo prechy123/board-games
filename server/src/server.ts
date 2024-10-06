@@ -37,11 +37,11 @@ app.get("/", (req: Request, res: Response) => {
   res.send("How did you get here");
 });
 
+const PORT = process.env.PORT || 3000
 // connect to db
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    const PORT = process.env.PORT;
     server.listen(PORT, () => {
       console.log(
         `connected to db & Server is running on http://localhost:${PORT}`
