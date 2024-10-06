@@ -1,4 +1,7 @@
+"use client";
+
 import AuthProvider from "./AuthProvider";
+import ReactQueryProvider from "./ReactQueryProvider";
 import ThemeProvider from "./ThemeProvider";
 
 export default function AllProvider({
@@ -7,8 +10,10 @@ export default function AllProvider({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
-      <ThemeProvider>{children}</ThemeProvider>
-    </AuthProvider>
+    <ReactQueryProvider>
+      <AuthProvider>
+        <ThemeProvider>{children}</ThemeProvider>
+      </AuthProvider>
+    </ReactQueryProvider>
   );
 }
