@@ -28,12 +28,10 @@ export const login = async (email: string, password: string) => {
 
 export const forgotPassword = async (email: string) => {
   const user = await userRepository.findByEmail(email);
-  if (!user) return null
+  if (!user) return null;
 
   const resetToken = crypto.randomBytes(20).toString("hex");
-  user.resetPasswordToken = resetToken;
-  user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
-  await user.save();
+  await userRepository.resetToken(user, resetToken);
 
   const transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -58,10 +56,7 @@ export const resetPassword = async (token: string, password: string) => {
   const user = await userRepository.findByResetToken(token);
   if (!user) return null;
 
-  user.password = password;
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
-  await user.save();
+  await userRepository.setNewPassword(user, password);
 
   return true;
 };

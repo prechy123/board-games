@@ -1,6 +1,7 @@
 import { Document } from "mongoose";
 
 export interface IUser extends Document {
+  id?: string;
   email: string;
   password: string;
   userName: string;
@@ -8,4 +9,9 @@ export interface IUser extends Document {
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
   comparePassword(password: string): Promise<boolean>;
+}
+
+export interface HookNextFunction {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (error?: Error): any;
 }

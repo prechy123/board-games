@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import { IUser } from "../types/user.js";
+import crypto from "crypto";
 
 export const findByEmail = async (email: string): Promise<IUser | null> => {
   return await User.findOne({ email });
@@ -21,4 +22,17 @@ export const createUser = async (
 ): Promise<IUser> => {
   const newUser = new User({ email, password, userName });
   return await newUser.save();
+};
+
+export const resetToken = async (user: IUser, resetToken: string): Promise<IUser> => {
+  user.resetPasswordToken = resetToken;
+  user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
+  return await user.save();
+};
+
+export const setNewPassword = async (user: IUser, password: string): Promise<IUser> => {
+  user.password = password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  return await user.save();
 };

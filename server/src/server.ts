@@ -48,6 +48,6 @@ mongoose
       );
     });
   })
-  .catch((error) => {
+  .catch((error: Error) => {
     console.log(error);
   });
