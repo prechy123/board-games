@@ -1,22 +1,53 @@
-import { ToastPosition, useToast } from "@chakra-ui/react";
+import { toast, ToastContent, ToastOptions, Slide, Id } from "react-toastify";
 
-const defaultToastOptions = {
-  position: "bottom-left" as ToastPosition,
-  duration: 9000,
-  isClosable: true,
+export const defaultToastOptions: ToastOptions = {
+  position: "bottom-left",
+  autoClose: 4000,
+  hideProgressBar: true,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  transition: Slide,
 };
 
-type ToastStatus = "success" | "error" | "info" | "warning" | "loading";
+type ToastType =
+  | "success"
+  | "error"
+  | "info"
+  | "warning"
+  | "loading"
+  | "default";
 
-type ToastContent = {
-  title: string;
-  description: string;
-  status: ToastStatus;
-};
+/**
+ * Display toast
+ *
+ * @param {ToastType} type
+ * @param {ToastContent} content
+ * @param {ToastOptions} [options=defaultToastOption]
+ * @return {Id}
+ */
+export const showToast = (
+  type: ToastType,
+  content: ToastContent,
+  options: Partial<ToastOptions> = {}
+): Id => {
+  const optionsToApply = { ...defaultToastOptions, ...options };
 
-export const ShowToast = (content: ToastContent) => {
-  const toast = useToast();
-  const optionsToApply = { ...defaultToastOptions, ...content };
-
-  return toast(optionsToApply);
+  switch (type) {
+    case "success":
+      return toast.success(content, optionsToApply);
+    case "error":
+      return toast.error(content, optionsToApply);
+    case "info":
+      return toast.info(content, optionsToApply);
+    case "warning":
+      return toast.warn(content, optionsToApply);
+    case "loading":
+      return toast.loading(content, optionsToApply);
+    case "default":
+      return toast(content, optionsToApply);
+    default:
+      return toast(content, optionsToApply);
+  }
 };

@@ -1,9 +1,9 @@
 "use client";
 
 import AuthProvider from "./AuthProvider";
-import ChakraProvider from "./ChakraProvider";
 import ReactQueryProvider from "./ReactQueryProvider";
 import ThemeProvider from "./ThemeProvider";
+import ToastProvider from "./ToastProvider";
 
 export default function AllProvider({
   children,
@@ -14,9 +14,9 @@ export default function AllProvider({
     <ReactQueryProvider>
       <AuthProvider>
         <ThemeProvider>
-          <ChakraProvider>
+          <ToastProvider>
             {children}
-          </ChakraProvider>
+          </ToastProvider>
         </ThemeProvider>
       </AuthProvider>
     </ReactQueryProvider>
