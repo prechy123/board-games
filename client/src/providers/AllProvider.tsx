@@ -1,6 +1,7 @@
 "use client";
 
 import AuthProvider from "./AuthProvider";
+import ChakraProvider from "./ChakraProvider";
 import ReactQueryProvider from "./ReactQueryProvider";
 import ThemeProvider from "./ThemeProvider";
 
@@ -12,7 +13,11 @@ export default function AllProvider({
   return (
     <ReactQueryProvider>
       <AuthProvider>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <ChakraProvider>
+            {children}
+          </ChakraProvider>
+        </ThemeProvider>
       </AuthProvider>
     </ReactQueryProvider>
   );

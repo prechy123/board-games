@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.10.1",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@reduxjs/toolkit": "^2.2.7",
     "@tanstack/react-query": "^5.59.0",
     "framer-motion": "^11.11.1",
