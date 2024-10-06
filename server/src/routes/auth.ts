@@ -8,6 +8,7 @@ const router = Router();
 
 // Register route
 router.post("/register", async (req: Request, res: Response): Promise<void> => {
+  console.log(req.body); // Log to see what body content is being received
   const { email, password } = req.body;
 
   try {

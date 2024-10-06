@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.js";
 import ChatNameSpace from "./sockets/chat.js";
+import mongoose from "mongoose";
 
 const corsOption = {
   origin: ["http://localhost:3000", "https://board-games-two.vercel.app"],
@@ -36,7 +37,17 @@ app.get("/", (req: Request, res: Response) => {
   res.send("How did you get here");
 });
 
-const PORT = process.env.PORT;
-server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// connect to db
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    const PORT = process.env.PORT;
+    server.listen(PORT, () => {
+      console.log(`connected to db & Server is running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) =>{
+    console.log(error)
+  })
+
+
+
