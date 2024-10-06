@@ -1,17 +1,15 @@
 import mongoose, { Document, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
-
-export interface IUser extends Document {
-  email: string;
-  password: string;
-  resetPasswordToken?: string;
-  resetPasswordExpires?: Date;
-  comparePassword(password: string): Promise<boolean>;
-}
+import { IUser } from "../types/user.js";
 
 const UserSchema: Schema<IUser> = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  userName: String,
+  profilePictureUrl: {
+    type: String,
+    default: "https://raw.githubusercontent.com/nz-m/public-files/main/dp.jpg"
+  },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });

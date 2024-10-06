@@ -9,7 +9,7 @@ import ChatNameSpace from "./sockets/chat.js";
 import mongoose from "mongoose";
 
 const corsOption = {
-  origin: ["http://localhost:3000", "https://board-games-two.vercel.app"],
+  origin: process.env.BASE_URL,
   methods: "*",
   credentials: true,
 };
@@ -38,16 +38,16 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // connect to db
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
     const PORT = process.env.PORT;
     server.listen(PORT, () => {
-      console.log(`connected to db & Server is running on http://localhost:${PORT}`);
+      console.log(
+        `connected to db & Server is running on http://localhost:${PORT}`
+      );
     });
   })
-  .catch((error) =>{
-    console.log(error)
-  })
-
-
-
+  .catch((error) => {
+    console.log(error);
+  });
