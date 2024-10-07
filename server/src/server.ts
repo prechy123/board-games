@@ -7,14 +7,14 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.js";
 import ChatNameSpace from "./sockets/chat.js";
 import mongoose from "mongoose";
+dotenv.config();
 
 const corsOption = {
   origin: process.env.BASE_URL,
-  methods: "*",
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
 
-dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));

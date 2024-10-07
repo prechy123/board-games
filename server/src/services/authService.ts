@@ -1,5 +1,4 @@
 import * as userRepository from "../repositories/userRepository.js";
-import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
@@ -19,11 +18,13 @@ export const login = async (email: string, password: string) => {
   if (!user || !(await user.comparePassword(password))) {
     return null;
   }
-
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
-  });
-  return token;
+  const userData = {
+    username: user.userName,
+    email: user.email,
+    profilePictureUrl: user.profilePictureUrl
+  }
+  
+  return userData;
 };
 
 export const forgotPassword = async (email: string) => {

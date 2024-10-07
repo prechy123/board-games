@@ -1,7 +1,8 @@
 import Link from "next/link";
 import * as motion from "framer-motion/client";
+import SignInForm from "@/components/login/SignInForm";
 
-export default function SignUpPage() {
+export default function SignInPage() {
   return (
     <motion.div
       className=" px-4 flex flex-col sm:block"
@@ -84,41 +85,7 @@ export default function SignUpPage() {
 
       <div className="max-w-sm mx-auto">
         <h2 className=" text-center mb-1">Login to your Board Games account</h2>
-        <form>
-          <div className="mb-5">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Email Address
-              <motion.input
-                type="email"
-                id="email"
-                className="reg-input"
-                placeholder="johndoe@gmail.com"
-                required
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              />
-            </label>
-          </div>
-          <div className="mb-5">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Password
-              <motion.input
-                type="password"
-                id="password"
-                className="reg-input"
-                required
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              />
-            </label>
-          </div>
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Login
-          </button>
-        </form>
+        <SignInForm />
 
         <div className=" mt-4">
           <Link href="/sign-up">Dont have an account? Sign Up</Link>

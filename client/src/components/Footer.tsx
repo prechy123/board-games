@@ -13,7 +13,6 @@ export default function Footer() {
           >
             Bamidele
           </Link>{" "}
-          and <Link href="/" className="underline">Dorbes</Link>.
         </p>
       </div>
     </div>
