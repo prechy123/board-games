@@ -62,6 +62,7 @@ export const login = async (details: InputType) => {
     }
     showToast("error", data.message);
   } catch (err) {
+    console.log(err);
     toast.dismiss();
     showToast("error", "Internal server error, try again later");
   }
@@ -92,6 +93,7 @@ export const forgotPassword = async (email: string) => {
     }
     showToast("error", data.message);
   } catch (err) {
+    console.log(err);
     toast.dismiss();
     showToast("error", "Internal server error, try again later");
   }
@@ -118,6 +120,7 @@ export const resetPassword = async (password: string, token: string) => {
     }
     showToast("error", data.message);
   } catch (err) {
+    console.log(err);
     toast.dismiss();
     showToast("error", "Internal server error, try again later");
   }
