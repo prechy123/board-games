@@ -1,4 +1,4 @@
-import { showToast } from "@/libs/utils/ShowToast";
+import showToast from "@/libs/utils/ShowToast";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 

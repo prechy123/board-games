@@ -27,7 +27,7 @@ type ToastType =
  * @param {ToastOptions} [options=defaultToastOption]
  * @return {Id}
  */
-export const showToast = (
+const showToast = (
   type: ToastType,
   content: ToastContent,
   options: Partial<ToastOptions> = {}
@@ -51,3 +51,5 @@ export const showToast = (
       return toast(content, optionsToApply);
   }
 };
+
+export default showToast;
