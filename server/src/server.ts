@@ -7,11 +7,12 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.js";
 import ChatNameSpace from "./sockets/chat.js";
 import mongoose from "mongoose";
+import { TicTacToeNameSpace } from "./sockets/game.js";
 dotenv.config();
 
 const corsOption = {
   origin: process.env.BASE_URL,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
 
@@ -30,6 +31,7 @@ const io = new Server(server, {
   cors: corsOption,
 });
 // Socket IO name spaces
+TicTacToeNameSpace(io);
 ChatNameSpace(io);
 
 // default route

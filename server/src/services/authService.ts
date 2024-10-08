@@ -21,9 +21,10 @@ export const login = async (email: string, password: string) => {
   const userData = {
     username: user.userName,
     email: user.email,
-    profilePictureUrl: user.profilePictureUrl
-  }
-  
+    profilePictureUrl: user.profilePictureUrl,
+    playerId: user._id,
+  };
+
   return userData;
 };
 
