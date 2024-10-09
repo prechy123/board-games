@@ -1,12 +1,20 @@
+"use client"
+
+import showToast from "@/libs/utils/showToast";
 import * as motion from "framer-motion/client";
 
-export default function SocialButtonSignIn() {
+export default function SocialButtonsSignUp() {
+  const handleSignUp = () => {
+    showToast("warning", "Currently not available, Sign Up manually")
+  }
   return (
     <div className=" inline-flex sm:flex justify-center flex-col sm:flex-row mx-auto">
       <motion.button
         type="button"
         className="social-btn bg-[#3b5998] hover:bg-[#3b5998]/90"
         whileHover={{ scale: 1.1 }}
+        whileTap={{scale: 0.9}}
+        onClick={handleSignUp}
       >
         <svg
           className="w-4 h-4 me-2"
@@ -27,6 +35,8 @@ export default function SocialButtonSignIn() {
         type="button"
         className="social-btn bg-[#1da1f2] hover:bg-[#1da1f2]/90 "
         whileHover={{ scale: 1.1 }}
+        whileTap={{scale: 0.9}}
+        onClick={handleSignUp}
       >
         <svg
           className="w-4 h-4 me-2"
@@ -47,6 +57,8 @@ export default function SocialButtonSignIn() {
         type="button"
         className="social-btn bg-[#EA4335] hover:bg-[#EA4335]/90"
         whileHover={{ scale: 1.1 }}
+        whileTap={{scale: 0.9}}
+        onClick={handleSignUp}
       >
         <svg
           className="w-4 h-4 me-2"

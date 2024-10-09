@@ -1,12 +1,20 @@
+"use client"
+
+import showToast from "@/libs/utils/showToast";
 import * as motion from "framer-motion/client";
 
 export default function SocialButtonSignIn() {
+  const handleSignIn = () => {
+    showToast("warning", "Currently not available, Sign In manually")
+  }
   return (
     <div className=" inline-flex sm:flex justify-center flex-col sm:flex-row mx-auto">
       <motion.button
         type="button"
         className="social-btn bg-[#3b5998] hover:bg-[#3b5998]/90"
         whileHover={{ scale: 1.1 }}
+        whileTap={{scale: 0.9}}
+        onClick={handleSignIn}
       >
         <svg
           className="w-4 h-4 me-2"
@@ -21,12 +29,14 @@ export default function SocialButtonSignIn() {
             clipRule="evenodd"
           />
         </svg>
-        Sign Up with Facebook
+        Sign In with Facebook
       </motion.button>
       <motion.button
         type="button"
         className="social-btn bg-[#1da1f2] hover:bg-[#1da1f2]/90 "
         whileHover={{ scale: 1.1 }}
+        whileTap={{scale: 0.9}}
+        onClick={handleSignIn}
       >
         <svg
           className="w-4 h-4 me-2"
@@ -41,12 +51,14 @@ export default function SocialButtonSignIn() {
             clipRule="evenodd"
           />
         </svg>
-        Sign Up with Twitter
+        Sign In with Twitter
       </motion.button>
       <motion.button
         type="button"
         className="social-btn bg-[#EA4335] hover:bg-[#EA4335]/90"
         whileHover={{ scale: 1.1 }}
+        whileTap={{scale: 0.9}}
+        onClick={handleSignIn}
       >
         <svg
           className="w-4 h-4 me-2"
@@ -61,7 +73,7 @@ export default function SocialButtonSignIn() {
             clipRule="evenodd"
           />
         </svg>
-        Sign Up with Google
+        Sign In with Google
       </motion.button>
     </div>
   );

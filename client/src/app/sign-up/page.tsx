@@ -1,6 +1,6 @@
 import Link from "next/link";
 import * as motion from "framer-motion/client";
-import SocialButtonSignIn from "@/components/login/SocialButtonsSignIn";
+import SocialButtonSignUp from "@/components/login/SocialButtonsSignUp";
 import SignUpForm from "@/components/login/SignUpForm";
 
 export default function SignUpPage() {
@@ -19,7 +19,7 @@ export default function SignUpPage() {
         },
       }}
     >
-      <SocialButtonSignIn />
+      <SocialButtonSignUp />
       <p className=" text-center my-2 sm:my-4">OR</p>
 
       <div className="max-w-sm mx-auto">
