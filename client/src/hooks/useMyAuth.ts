@@ -11,7 +11,6 @@ import showToast from "@/libs/utils/showToast";
 export default function useMyAuth() {
   const dispatch = useDispatch();
   const route = useRouter();
-  console.log(useSelector((state) => state.auth));
   const [user, setUser] = useState<IUser>();
   useEffect(() => {
     const userCookie = Cookies.get("user");
