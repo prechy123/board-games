@@ -2,7 +2,7 @@
 
 import { IUser } from "@/types/user";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { isAuth } from "@/redux/reducers/authSlice";
 import { useRouter } from "next/navigation";
