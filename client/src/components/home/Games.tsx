@@ -1,11 +1,6 @@
 "use client";
 
-import { isAuth } from "@/redux/reducers/authSlice";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import Cookies from "js-cookie";
-import { IUser } from "@/types/user";
 import * as motion from "framer-motion/client";
 import showToast from "@/libs/utils/showToast";
 
@@ -27,27 +22,7 @@ const gameVariants = {
 };
 
 export function Games() {
-  const dispatch = useDispatch();
   const route = useRouter();
-  const [user, setUser] = useState<IUser>();
-  useEffect(() => {
-    const userCookie = Cookies.get("user");
-    if (userCookie) {
-      setUser(JSON.parse(userCookie));
-    }
-  }, []);
-  if (user) {
-    dispatch(
-      isAuth({
-        isAuthenticated: true,
-        email: user.email,
-        profilePictureUrl: user.profilePictureUrl,
-        username: user.username,
-        playerId: user.playerId,
-      })
-    );
-  }
-
   // temporary variable
   const games = [
     { title: "Tic Tac Toe", link: "tic-tac-toe" },

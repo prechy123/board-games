@@ -1,6 +1,46 @@
-import * as motion from "framer-motion/client";
+"use client";
 
+import showToast from "@/libs/utils/showToast";
+import { RootState } from "@/types/user";
+import * as motion from "framer-motion/client";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { io } from "socket.io-client";
+
+const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tic-tac-toe`);
 export default function TicTacToe() {
+  const route = useRouter();
+  const { playerId } = useSelector((state: RootState) => state.auth);
+  const [gameCode, setGameCode] = useState("");
+
+  const createGame = () => {
+    const id = showToast("loading", "Creating Game");
+    socket.emit("createGame", { playerId });
+    toast.dismiss(id);
+  };
+
+  const joinGame = () => {
+    const id = showToast("loading", "Joing Game");
+    socket.emit("joinGame", { playerId, gameCode });
+    toast.dismiss(id);
+  };
+
+  useEffect(() => {
+    socket.on("joinedGame", (data) => {
+      showToast("success", "Joining Game");
+      route.push(`tic-tac-toe/${data.gameCode}`);
+    });
+
+    socket.on("error", (data) => {
+      showToast("error", data)
+    })
+
+    return () => {
+      socket.off("joinedGame");
+    };
+  }, [route]);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -13,6 +53,7 @@ export default function TicTacToe() {
             type="button"
             className=" w-full text-white bg-blue-700 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600"
             whileTap={{ scale: 0.9 }}
+            onClick={createGame}
           >
             Create Game
           </motion.button>
@@ -29,11 +70,14 @@ export default function TicTacToe() {
               required
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onChange={(e) => setGameCode(e.target.value)}
+              value={gameCode}
             />
             <motion.button
               type="button"
               className="text-white bg-blue-700 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 "
               whileTap={{ scale: 0.9 }}
+              onClick={joinGame}
             >
               Join Game
             </motion.button>

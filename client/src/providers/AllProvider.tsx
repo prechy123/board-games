@@ -1,9 +1,9 @@
 "use client";
 
 import AuthProvider from "./AuthProvider";
-import ReactQueryProvider from "./ReactQueryProvider";
 import ThemeProvider from "./ThemeProvider";
 import ToastProvider from "./ToastProvider";
+import UserAuthProvider from "./UserAuthProvider";
 
 export default function AllProvider({
   children,
@@ -11,14 +11,14 @@ export default function AllProvider({
   children: React.ReactNode;
 }) {
   return (
-    <ReactQueryProvider>
       <AuthProvider>
-        <ThemeProvider>
-          <ToastProvider>
-            {children}
-          </ToastProvider>
-        </ThemeProvider>
+        <UserAuthProvider>
+          <ThemeProvider>
+            <ToastProvider>
+              {children}
+            </ToastProvider>
+          </ThemeProvider>
+        </UserAuthProvider>
       </AuthProvider>
-    </ReactQueryProvider>
   );
 }
