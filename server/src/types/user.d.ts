@@ -11,6 +11,12 @@ export interface IUser extends Document {
   comparePassword(password: string): Promise<boolean>;
 }
 
+export interface IUserProfile extends Document {
+  email: string;
+  userName: string;
+  profilePictureUrl: string;
+}
+
 export interface HookNextFunction {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (error?: Error): any;

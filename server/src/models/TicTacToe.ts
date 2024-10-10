@@ -5,8 +5,8 @@ const TicTacToeSchema: Schema<ITacTacToe> = new Schema({
   player1: { type: Schema.Types.ObjectId, ref: "User" },
   player2: { type: Schema.Types.ObjectId, ref: "User" },
   tiles: {
-    type: [[Array]],
-    default: [
+    type: [[String]],
+    default: () => [
       ["-", "-", "-"],
       ["-", "-", "-"],
       ["-", "-", "-"],

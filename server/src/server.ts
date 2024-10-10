@@ -5,6 +5,7 @@ import { Server } from "socket.io";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.js";
+import gameRouter from "./routes/game.js"
 import ChatNameSpace from "./sockets/chat.js";
 import mongoose from "mongoose";
 import { TicTacToeNameSpace } from "./sockets/game.js";
@@ -24,6 +25,7 @@ app.use(cors(corsOption));
 
 // routes
 app.use("/auth", authRouter);
+app.use("/game", gameRouter)
 
 // sockets
 const server = http.createServer(app);

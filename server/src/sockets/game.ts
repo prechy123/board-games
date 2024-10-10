@@ -34,7 +34,7 @@ export function TicTacToeNameSpace(io: Server) {
   const chatNamespace = io.of("/tic-tac-toe");
   chatNamespace.on("connection", (socket: Socket) => {
     console.log("A user connected to tic-tac-toe");
-    socket.on("createGame", async (data : {playerId: string}) => {
+    socket.on("createGame", async (data: { playerId: string }) => {
       try {
         let game;
         let gameCode: string;
@@ -52,16 +52,14 @@ export function TicTacToeNameSpace(io: Server) {
           playerTurn: playerObjectId,
         });
         await newGame.save();
-        socket.join(gameCode);
         console.log(`Player ${data.playerId} joined game ${gameCode}`);
 
         socket.emit("joinedGame", {
-          gameCode: gameCode,
-          game: newGame.tiles,
-          playerTurn: newGame.player1,
-          winner: null,
+          gameCode,
         });
-        socket.to(gameCode).emit("playerJoined", { playerId: data.playerId });
+        socket.join(gameCode);
+        socket
+            .emit("playerJoined", { playerId: data.playerId });
       } catch (error) {
         console.error(error);
         socket.emit("error", "An error occurred while creating the game");
@@ -82,20 +80,15 @@ export function TicTacToeNameSpace(io: Server) {
           if (game.player1 == data.playerId || game.player2 == data.playerId) {
             return socket.emit("error", "you are already in the game");
           }
-          socket.join(data.gameCode);
           const playerObjectId: Types.ObjectId = new Types.ObjectId(
             data.playerId
           );
           game.player2 = playerObjectId;
           game.save();
-          console.log(`Player ${data.playerId} joined game ${data.gameCode}`);
-
           socket.emit("joinedGame", {
             gameCode: data.gameCode,
-            game: game.tiles,
-            playerTurn: game.playerTurn,
-            winner: game.winner,
           });
+          socket.join(data.gameCode);
           socket
             .to(data.gameCode)
             .emit("playerJoined", { playerId: data.playerId });
@@ -105,6 +98,10 @@ export function TicTacToeNameSpace(io: Server) {
         }
       }
     );
+    socket.on("joinRoom", (room) => {
+      socket.join(room);
+      console.log("joined room");
+    });
     socket.on(
       "makeMove",
       async (data: {
@@ -114,6 +111,7 @@ export function TicTacToeNameSpace(io: Server) {
       }) => {
         try {
           const game = await TicTacToe.findOne({ gameCode: data.gameCode });
+          console.log("data", data)
           if (!game) {
             socket.emit("error", "Game not found");
             return;
@@ -128,13 +126,13 @@ export function TicTacToeNameSpace(io: Server) {
               ? game.player2
               : game.player1;
           const winner = checkForWinner(game.tiles);
-          if (winner === "draw") {
-            socket.to(data.gameCode).emit("game-over", { winner: null });
-          } else if (winner) {
-            game.winner = winner;
-            game.save();
-            socket.to(data.gameCode).emit("game-over", { winner });
-          }
+          // if (winner === "draw") {
+          //   socket.to(data.gameCode).emit("game-over", { winner: null });
+          // } else if (winner) {
+          //   game.winner = data.playerId;
+          //   await game.save();
+          //   socket.to(data.gameCode).emit("game-over", { winner });
+          // }
           await game.save();
 
           socket.to(data.gameCode).emit("updateGame", {

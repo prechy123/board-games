@@ -29,6 +29,23 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+export const getProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  try {
+    const user = await authService.profile(id);
+    if (!user) {
+      res.status(400).json({ message: "Invalid credentials" });
+      return;
+    }
+    res.status(200).json({ profile: user });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const forgetPassword = async (
   req: Request,
   res: Response
@@ -42,7 +59,7 @@ export const forgetPassword = async (
     }
     res.status(200).json({ message });
   } catch (error) {
-    const err = error as Error
+    const err = error as Error;
     res.status(500).json({ message: err.message });
   }
 };

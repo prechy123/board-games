@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import { IUser } from "../types/user.js";
+import { IUser, IUserProfile } from "../types/user.js";
 import crypto from "crypto";
 
 export const findByEmail = async (email: string): Promise<IUser | null> => {
@@ -14,6 +14,10 @@ export const findByResetToken = async (
     resetPasswordExpires: { $gt: Date.now() },
   });
 };
+
+export const findById = async (id: string): Promise<IUserProfile> => {
+  return await User.findById(id).select("email userName profilePictureUrl")
+}
 
 export const createUser = async (
   email: string,
@@ -36,3 +40,4 @@ export const setNewPassword = async (user: IUser, password: string): Promise<IUs
   user.resetPasswordExpires = undefined;
   return await user.save();
 };
+

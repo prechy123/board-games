@@ -28,6 +28,12 @@ export const login = async (email: string, password: string) => {
   return userData;
 };
 
+export const profile = async (id: string) => {
+  const user = await userRepository.findById(id);
+  if (!user) return null;
+  return user;
+};
+
 export const forgotPassword = async (email: string) => {
   const user = await userRepository.findByEmail(email);
   if (!user) return null;

@@ -5,6 +5,7 @@ const router = Router();
 
 router.post("/register", authController.register);
 router.post("/login", authController.login);
+router.get("/profile/:id", authController.getProfile)
 router.post("/forgot-password", authController.forgetPassword);
 router.post("/reset-password/:token", authController.resetPassword);
 
