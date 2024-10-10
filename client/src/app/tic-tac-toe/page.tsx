@@ -14,33 +14,39 @@ export default function TicTacToe() {
   const route = useRouter();
   const { playerId } = useSelector((state: RootState) => state.auth);
   const [gameCode, setGameCode] = useState("");
+  const [joining, setJoining] = useState(false);
 
   const createGame = () => {
-    const id = showToast("loading", "Creating Game");
+    showToast("loading", "Creating Game");
     socket.emit("createGame", { playerId });
-    toast.dismiss(id);
   };
 
   const joinGame = () => {
-    const id = showToast("loading", "Joing Game");
+    showToast("loading", "Joining Game");
+    setJoining(true);
     socket.emit("joinGame", { playerId, gameCode });
-    toast.dismiss(id);
   };
 
   useEffect(() => {
     socket.on("joinedGame", (data) => {
+      toast.dismiss();
       showToast("success", "Joining Game");
-      route.push(`tic-tac-toe/${data.gameCode}`);
+      if (joining) {
+        route.push(`tic-tac-toe/${data.gameCode}?state=join`);
+      } else {
+        route.push(`tic-tac-toe/${data.gameCode}?state=create`);
+      }
     });
 
     socket.on("error", (data) => {
-      showToast("error", data)
-    })
+      toast.dismiss();
+      showToast("error", data);
+    });
 
     return () => {
       socket.off("joinedGame");
     };
-  }, [route]);
+  }, [route, joining]);
   return (
     <motion.div
       initial={{ opacity: 0 }}

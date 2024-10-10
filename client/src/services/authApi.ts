@@ -68,6 +68,28 @@ export const login = async (details: InputType) => {
   }
 };
 
+export const getProfile = async (id: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/${BASE}/profile/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const res: {
+      profile: { email: string; userName: string; profilePictureUrl: string };
+    } = await response.json();
+    if (res.profile.email) {
+      return res.profile;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const forgotPassword = async (email: string) => {
   try {
     const toastId = showToast("loading", "loading...");

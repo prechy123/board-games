@@ -11,26 +11,24 @@ import showToast from "@/libs/utils/showToast";
 export default function useMyAuth() {
   const dispatch = useDispatch();
   const route = useRouter();
-  const [user, setUser] = useState<IUser>();
+
   useEffect(() => {
     const userCookie = Cookies.get("user");
     if (userCookie) {
-      setUser(JSON.parse(userCookie));
-      showToast("info", "User Connected")
+      const parsedUser = JSON.parse(userCookie);
+      showToast("info", "User Connected");
+      dispatch(
+        isAuth({
+          isAuthenticated: true,
+          email: parsedUser.email,
+          profilePictureUrl: parsedUser.profilePictureUrl,
+          username: parsedUser.username,
+          playerId: parsedUser.playerId,
+        })
+      );
     } else {
       route.push("/sign-in");
-      showToast("info", "Sign in to continue")
+      showToast("info", "Sign in to continue");
     }
-  }, []);
-  if (user) {
-    dispatch(
-      isAuth({
-        isAuthenticated: true,
-        email: user.email,
-        profilePictureUrl: user.profilePictureUrl,
-        username: user.username,
-        playerId: user.playerId,
-      })
-    );
-  }
+  }, [dispatch, route]);
 }
