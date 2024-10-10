@@ -1,7 +1,6 @@
 "use client";
 
-import { IUser } from "@/types/user";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { isAuth } from "@/redux/reducers/authSlice";
@@ -14,7 +13,7 @@ export default function useMyAuth() {
 
   useEffect(() => {
     const userCookie = Cookies.get("user");
-    
+
     if (userCookie) {
       const parsedUser = JSON.parse(userCookie);
       showToast("info", "User Connected");
