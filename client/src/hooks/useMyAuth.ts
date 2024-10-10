@@ -14,6 +14,7 @@ export default function useMyAuth() {
 
   useEffect(() => {
     const userCookie = Cookies.get("user");
+    
     if (userCookie) {
       const parsedUser = JSON.parse(userCookie);
       showToast("info", "User Connected");
