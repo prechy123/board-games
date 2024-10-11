@@ -34,10 +34,6 @@ export default function Tiles({
     socket.emit("joinRoom", gameCode);
   }, [gameCode]);
 
-  useEffect(() => {
-    console.log(currentPlayer);
-  }, [currentPlayer]);
-
   const handleClick = (x: number, y: number) => {
     if (playerTurn !== "defaultPlayerId") {
       if (playerTurn !== playerId) {
