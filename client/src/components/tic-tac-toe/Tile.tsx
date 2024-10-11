@@ -5,7 +5,7 @@ import * as motion from "framer-motion/client";
 
 const draw = {
   hidden: { pathLength: 0, opacity: 0 },
-  visible: (i) => {
+  visible: (i: number) => {
     const delay = i * 0.5;
     return {
       pathLength: 1,
@@ -26,9 +26,11 @@ export default function Tile({
   handleClick: () => void;
 }) {
   return (
-    <span
+    <motion.span
       className=" w-16 sm:w-28 h-16 sm:h-28 bg-white text-red-500 text-3xl flex items-center justify-center"
       onClick={handleClick}
+      whileHover={{scale: 1.2, backgroundColor: "#e0e0e0"}}
+      whileTap={{scale: 0.9, backgroundColor: "#cccccc"}}
     >
       {value === "-" ? (
         value
@@ -73,6 +75,6 @@ export default function Tile({
           )}
         </motion.svg>
       )}
-    </span>
+    </motion.span>
   );
 }
