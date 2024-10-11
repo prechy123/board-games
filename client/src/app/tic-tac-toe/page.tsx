@@ -30,7 +30,7 @@ export default function TicTacToe() {
   useEffect(() => {
     socket.on("joinedGame", (data) => {
       toast.dismiss();
-      showToast("success", "Joining Game");
+      // showToast("success", "Joined Game");
       if (joining) {
         route.push(`tic-tac-toe/${data.gameCode}?state=join`);
       } else {

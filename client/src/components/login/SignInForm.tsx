@@ -4,6 +4,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as motion from "framer-motion/client";
 import * as api from "@/services/authApi";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import showToast from "@/libs/utils/showToast";
+import { isAuth } from "@/redux/reducers/authSlice";
 
 type Input = {
   email: string;
@@ -12,10 +16,27 @@ type Input = {
 
 export default function SignInForm() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { handleSubmit, register } = useForm<Input>();
   const handleLogIn: SubmitHandler<Input> = async (data) => {
     const status = await api.login(data);
-    if (status && status === "success") router.push("/");
+    if (status && status === "success") {
+      const userCookie = Cookies.get("user");
+      if (userCookie) {
+        const parsedUser = JSON.parse(userCookie);
+        showToast("info", "User Connected");
+        dispatch(
+          isAuth({
+            isAuthenticated: true,
+            email: parsedUser.email,
+            profilePictureUrl: parsedUser.profilePictureUrl,
+            username: parsedUser.username,
+            playerId: parsedUser.playerId,
+          })
+        );
+      }
+      router.push("/");
+    }
   };
   return (
     <form onSubmit={handleSubmit(handleLogIn)}>

@@ -34,7 +34,7 @@ export function Games() {
   const handleButtonPressed = (link: string) => {
     if (link === "/")
       return showToast("info", "Currently not available, try Tic Tac Toe");
-    route.push(link);
+    route.push(link)
   };
   return (
     <motion.div variants={gamesVariants} initial="hidden" animate="visible">

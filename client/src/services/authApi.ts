@@ -9,33 +9,6 @@ type InputType = {
   password: string;
 };
 
-export const register = async (details: InputType) => {
-  try {
-    const toastId = showToast("loading", "loading...");
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/${BASE}/register`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(details),
-      }
-    );
-    const data = await response.json();
-    toast.dismiss(toastId);
-    if (data.message === "User registered successfully") {
-      showToast("success", data.message);
-      return "success";
-    }
-    showToast("error", data.message);
-  } catch (err) {
-    console.log(err);
-    toast.dismiss();
-    showToast("error", "Internal server error, try again later");
-  }
-};
-
 export const login = async (details: InputType) => {
   try {
     const toastId = showToast("loading", "loading...");
@@ -59,6 +32,34 @@ export const login = async (details: InputType) => {
       });
       showToast("success", data.message);
       return "success";
+    }
+    showToast("error", data.message);
+  } catch (err) {
+    console.log(err);
+    toast.dismiss();
+    showToast("error", "Internal server error, try again later");
+  }
+};
+
+export const register = async (details: InputType) => {
+  try {
+    const toastId = showToast("loading", "loading...");
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/${BASE}/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      }
+    );
+    const data = await response.json();
+    toast.dismiss(toastId);
+    if (data.message === "User registered successfully") {
+      showToast("success", data.message);
+      const res = await login(details);
+      return res;
     }
     showToast("error", data.message);
   } catch (err) {
