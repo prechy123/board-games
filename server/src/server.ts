@@ -1,15 +1,23 @@
-import express, { Request, Response } from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express, { Request, Response } from "express";
 import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.js";
-import gameRouter from "./routes/game.js"
+import userRouter from "./routes/user.js"
 import ChatNameSpace from "./sockets/chat.js";
 import mongoose from "mongoose";
 import { TicTacToeNameSpace } from "./sockets/game.js";
-dotenv.config();
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_APIKEY,
+  api_secret: process.env.CLOUDINARY_APISECRET,
+});
 
 const corsOption = {
   origin: process.env.BASE_URL,
@@ -18,14 +26,14 @@ const corsOption = {
 };
 
 const app = express();
-app.use(express.json());
+app.use(express.json({limit: "50mb"}));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
 app.use(cors(corsOption));
 
 // routes
 app.use("/auth", authRouter);
-app.use("/game", gameRouter)
+app.use("/user", userRouter)
 
 // sockets
 const server = http.createServer(app);

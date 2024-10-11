@@ -50,47 +50,56 @@ export default function Header() {
             <Image src={logo} alt="Board Games" width={120} height={120} />
           </Link>
         </motion.div>
-        <div
-          className="relative"
-          onMouseEnter={() => setThemeDropdown(true)}
-          onMouseLeave={() => setThemeDropdown(false)}
-        >
-          <motion.p
-            className=" cursor-pointer relative z-20"
+        <div className=" flex items-center justify-center sm:gap-5">
+          <motion.div
+            className=" p-1 bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent font-bold text-2xl"
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.8 }}
           >
-            <Image src={sun_and_moon} width={64} height={64} alt="theme" />
-          </motion.p>
-          {themeDropDown && (
-            <motion.div
-              className="absolute top-10 right-10 bg-black dark:bg-white text-white dark:text-black w-20 text-center p-2 rounded px-4 shadow-lg"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
+            <Link href="/profile">Profile</Link>
+          </motion.div>
+          <div
+            className="relative"
+            onMouseEnter={() => setThemeDropdown(true)}
+            onMouseLeave={() => setThemeDropdown(false)}
+          >
+            <motion.p
+              className=" cursor-pointer relative z-20"
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
             >
-              <motion.p
-                onClick={() => {
-                  setTheme("light");
-                  setThemeDropdown(false);
-                }}
-                className=" cursor-pointer mb-1 hover:font-bold"
-                variants={childVariants}
+              <Image src={sun_and_moon} width={64} height={64} alt="theme" />
+            </motion.p>
+            {themeDropDown && (
+              <motion.div
+                className="absolute top-10 right-10 bg-black dark:bg-white text-white dark:text-black w-20 text-center p-2 rounded px-4 shadow-lg"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
               >
-                Light
-              </motion.p>
-              <motion.p
-                onClick={() => {
-                  setTheme("dark");
-                  setThemeDropdown(false);
-                }}
-                className=" cursor-pointer hover:font-bold"
-                variants={childVariants}
-              >
-                Dark
-              </motion.p>
-            </motion.div>
-          )}
+                <motion.p
+                  onClick={() => {
+                    setTheme("light");
+                    setThemeDropdown(false);
+                  }}
+                  className=" cursor-pointer mb-1 hover:font-bold"
+                  variants={childVariants}
+                >
+                  Light
+                </motion.p>
+                <motion.p
+                  onClick={() => {
+                    setTheme("dark");
+                    setThemeDropdown(false);
+                  }}
+                  className=" cursor-pointer hover:font-bold"
+                  variants={childVariants}
+                >
+                  Dark
+                </motion.p>
+              </motion.div>
+            )}
+          </div>
         </div>
       </div>
     </nav>
