@@ -36,8 +36,8 @@ export default function Tile({
         value
       ) : (
         <motion.svg
-          width="300"
-          height="300"
+          width="100%"
+          height="100%"
           viewBox="0 0 300 300"
           initial="hidden"
           animate="visible"
