@@ -6,7 +6,7 @@ export interface IUser {
 }
 
 export interface PlayerState {
-  : string | null;
+  userName: string | null;
   profilePictureUrl: string | null;
 }
 
