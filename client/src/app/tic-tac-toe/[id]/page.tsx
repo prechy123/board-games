@@ -14,6 +14,7 @@ const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tic-tac-toe`);
 export default function TicTacToe({ params }: { params: Params }) {
   const { id } = params;
   const [roomFull, setRoomFull] = useState(false);
+  const [currentPlayer, setCurrentPlayer] = useState("X");
   const searchParams = useSearchParams()
   const state = searchParams.get("state")
   console.log(state)
@@ -30,6 +31,7 @@ export default function TicTacToe({ params }: { params: Params }) {
 
     });
     if (state === "join") {
+      setCurrentPlayer("O")
       setRoomFull(true)
     }
 
@@ -39,7 +41,7 @@ export default function TicTacToe({ params }: { params: Params }) {
   }, [id, state]);
   return roomFull ? (
     <div className="w-full flex justify-center">
-      <Tiles gameCode={id} />
+      <Tiles gameCode={id} currentPlayer={currentPlayer} />
     </div>
   ) : (
     <div className=" text-center text-5xl">

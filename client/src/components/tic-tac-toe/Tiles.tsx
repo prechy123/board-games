@@ -6,35 +6,59 @@ import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import { RootState } from "@/types/user";
 import showToast from "@/libs/utils/showToast";
+import checkTicTocToe from "@/libs/utils/checkTicTocToe";
 
 const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tic-tac-toe`);
-export default function Tiles({ gameCode }: { gameCode: string }) {
+export default function Tiles({
+  gameCode,
+  currentPlayer,
+}: {
+  gameCode: string;
+  currentPlayer: string;
+}) {
   const { playerId } = useSelector((state: RootState) => state.auth);
   const [playerTurn, setPlayerTurn] = useState("defaultPlayerId");
+  const [winner, setWinner] = useState("");
   const [buttons, setButtons] = useState<string[][]>([
     ["-", "-", "-"],
     ["-", "-", "-"],
     ["-", "-", "-"],
   ]);
-  const [currentPlayer, setCurrentPlayer] = useState("X");
+
+  useEffect(() => {
+    const result = checkTicTocToe(buttons);
+    setWinner(result);
+  }, [buttons]);
 
   useEffect(() => {
     socket.emit("joinRoom", gameCode);
   }, [gameCode]);
 
+  useEffect(() => {
+    console.log(currentPlayer);
+  }, [currentPlayer]);
+
   const handleClick = (x: number, y: number) => {
-    if (playerTurn !== playerId) {
-      if (playerTurn !== "defaultPlayerId") {
+    if (playerTurn !== "defaultPlayerId") {
+      if (playerTurn !== playerId) {
         showToast("info", "It is not your turn");
         return;
       }
     }
+    if (playerTurn === "defaultPlayerId") {
+      if (currentPlayer === "O") {
+        showToast("info", "You are not the starting player");
+        return;
+      }
+    }
+    setPlayerTurn("otherPlayer");
+
     setButtons((prev) => {
       if (prev[x][y] !== "-") return prev;
 
-      const newButtons = [...prev];
+      // const newButtons = [...prev];
+      const newButtons = prev.map((row) => [...row]);
       newButtons[x][y] = currentPlayer;
-      console.log(newButtons);
       socket.emit("makeMove", {
         playerId,
         gameCode,
@@ -42,47 +66,20 @@ export default function Tiles({ gameCode }: { gameCode: string }) {
       });
       return newButtons;
     });
-    setCurrentPlayer((prevPlayer) => (prevPlayer === "X" ? "O" : "X"));
   };
   useEffect(() => {
     socket.on("updateGame", (data) => {
-      console.log(data);
       setButtons(data.game);
       setPlayerTurn(data.playerTurn);
     });
 
-    socket.on("error", (data) => {
-      // toast.dismiss();
-      showToast("error", data);
+    socket.on("game-over", (data) => {
+      showToast("success", data);
     });
   }, []);
-  const createGame = () => {
-    console.log(playerId);
-    // socket.emit("createGame", { playerId });
-    // socket.emit("joinGame", { playerId: "67054fdb8eb8456bef3153f4", gameCode: "981868" });
-    // socket.emit("makeMove", {
-    //   playerId: "67054fdb8eb8456bef3153f4",
-    //   gameCode: "981868",
-    //   newTiles: [
-    //     ["O", "O", "X"],
-    //     ["-", "O", "X"],
-    //     ["-", "-", "X"],
-    //   ],
-    // });
-  };
-  // useEffect(() => {
-  //   socket.on("joinedGame", (data) => {
-  //     console.log("Joined game:", data);
-  //   });
-  //   socket.on("error", (message) => {
-  //     console.error("Error:", message);
-  //   });
-  // }, [socket]);
+
   return (
     <div>
-      <button onClick={createGame} className=" flex flex-col">
-        Create Game
-      </button>
       <div className=" inline-flex flex-col gap-10 backdrop:blur-xl rounded-lg overflow-hidden">
         <div className=" flex gap-10">
           <Tile value={buttons[0][0]} handleClick={() => handleClick(0, 0)} />
@@ -100,6 +97,9 @@ export default function Tiles({ gameCode }: { gameCode: string }) {
           <Tile value={buttons[2][2]} handleClick={() => handleClick(2, 2)} />
         </div>
       </div>
+      {winner && (
+        <p>The Winner is: {winner}</p>
+      )}
     </div>
   );
 }

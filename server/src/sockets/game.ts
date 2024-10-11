@@ -14,20 +14,23 @@ function checkForWinner(tiles: string[][]) {
     [2, 4, 6],
   ];
   const flatTiles = tiles.flat();
-  for (const combination of correct) {
-    const [a, b, c] = combination;
+  for (let i = 0; i < correct.length; i++) {
+    const [x, y, z] = correct[i];
     if (
-      flatTiles[a] &&
-      flatTiles[a] === flatTiles[b] &&
-      flatTiles[a] === flatTiles[c]
+      flatTiles[x] !== "-" &&
+      flatTiles[x] === flatTiles[y] &&
+      flatTiles[y] === flatTiles[z]
     ) {
-      return flatTiles[a];
+      return flatTiles[x];
     }
   }
-  const isDraw = flatTiles.every((tile) => tile);
-  if (isDraw) return "draw";
 
-  return null;
+  const allFilled = flatTiles.every((tile) => tile !== "-");
+
+  if (allFilled) {
+    return "draw";
+  }
+  return false;
 }
 
 export function TicTacToeNameSpace(io: Server) {
@@ -58,8 +61,7 @@ export function TicTacToeNameSpace(io: Server) {
           gameCode,
         });
         socket.join(gameCode);
-        socket
-            .emit("playerJoined", { playerId: data.playerId });
+        socket.emit("playerJoined", { playerId: data.playerId });
       } catch (error) {
         console.error(error);
         socket.emit("error", "An error occurred while creating the game");
@@ -111,7 +113,7 @@ export function TicTacToeNameSpace(io: Server) {
       }) => {
         try {
           const game = await TicTacToe.findOne({ gameCode: data.gameCode });
-          console.log("data", data)
+          console.log("data", data);
           if (!game) {
             socket.emit("error", "Game not found");
             return;
@@ -126,13 +128,15 @@ export function TicTacToeNameSpace(io: Server) {
               ? game.player2
               : game.player1;
           const winner = checkForWinner(game.tiles);
-          // if (winner === "draw") {
-          //   socket.to(data.gameCode).emit("game-over", { winner: null });
-          // } else if (winner) {
-          //   game.winner = data.playerId;
-          //   await game.save();
-          //   socket.to(data.gameCode).emit("game-over", { winner });
-          // }
+          if (winner === "draw") {
+            socket.to(data.gameCode).emit("game-over", { winner: null });
+            socket.emit("game-over", { winner: null });
+          } else if (winner) {
+            game.winner = data.playerId;
+            await game.save();
+            socket.to(data.gameCode).emit("game-over", { winner });
+            socket.emit("game-over", { winner });
+          }
           await game.save();
 
           socket.to(data.gameCode).emit("updateGame", {
