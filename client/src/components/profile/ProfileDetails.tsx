@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 
 export default function ProfileDetails() {
     const router = useRouter()
-  const { username, profilePictureUrl, email } = useSelector(
+  const { username, profilePictureUrl, email, playerId } = useSelector(
     (state: RootState) => state.auth
   );
   const [newUserName, setNewUserName] = useState("");
@@ -31,7 +31,7 @@ export default function ProfileDetails() {
     setPictureUrl(dataUrl);
   };
   const handleSubmit = async () => {
-    const response = await api.updateProfile({username: newUserName, image: newPictureUrl});
+    const response = await api.updateProfile({username: newUserName, image: newPictureUrl, playerId});
     if (response === "success") router.refresh()
   }
 

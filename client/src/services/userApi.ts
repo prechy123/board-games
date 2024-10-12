@@ -7,6 +7,7 @@ const BASE = "user";
 type InputType = {
   username: string;
   image: string;
+  playerId: string
 };
 interface UserResponse {
   username: string;
@@ -22,7 +23,7 @@ export const updateProfile = async (details: InputType) => {
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/${BASE}/update-profile`,
       {
         method: "POST",
-        credentials: "include",
+        // credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -43,8 +44,6 @@ export const updateProfile = async (details: InputType) => {
         expires: 1,
         sameSite: "none",
         secure: true,
-        // httpOnly: true,
-        // domain: "board-games-backend.onrender.com"
       });
       return "success";
     }
