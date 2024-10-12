@@ -3,7 +3,6 @@ import * as UserService from "../services/userService.js"
 
 export const updateProfile = async (req: Request, res: Response): Promise<void> => {
   const { username, image } = req.body;
-  console.log(req.cookies.id)
   const playerId = req.cookies.id;
   try {
     const user = await UserService.updateProfile(username, image, playerId)

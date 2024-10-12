@@ -38,11 +38,13 @@ export const login = async (details: InputType) => {
         sameSite: "None",
         secure: true,
       });
-      // convert to jwt
+      // convert to jwt later
       Cookies.set("id", data.user.playerId, {
         expires: 1,
-        sameSite: "None",
+        sameSite: "none",
         secure: true,
+        // httpOnly: true,
+        // domain: "board-games-backend.onrender.com"
       });
       showToast("success", data.message);
       return "success";
