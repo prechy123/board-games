@@ -9,6 +9,13 @@ type InputType = {
   password: string;
 };
 
+interface UserResponse {
+  username: string;
+  email: string;
+  profilePictureUrl: string;
+  playerId: string;
+}
+
 export const login = async (details: InputType) => {
   try {
     const toastId = showToast("loading", "loading...");
@@ -22,15 +29,20 @@ export const login = async (details: InputType) => {
         body: JSON.stringify(details),
       }
     );
-    const data: { message: string; user: string } = await response.json();
+    const data: { message: string; user: UserResponse } =
+      await response.json();
     toast.dismiss(toastId);
     if (data.message === "User login successfully") {
       Cookies.set("user", JSON.stringify(data.user), {
         expires: 1,
         sameSite: "None",
         secure: true,
-        httpOnly: true,
-        domain: "board-games-backend.onrender.com"
+      });
+      // convert to jwt
+      Cookies.set("id", data.user.playerId, {
+        expires: 1,
+        sameSite: "None",
+        secure: true,
       });
       showToast("success", data.message);
       return "success";
