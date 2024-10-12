@@ -31,6 +31,7 @@ export const updateProfile = async (details: InputType) => {
         expires: 1,
         sameSite: "None",
         secure: true,
+        domain: "board-games-backend.onrender.com"
       });
       return "success";
     }
