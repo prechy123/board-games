@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/types/user";
 import showToast from "@/libs/utils/showToast";
 import checkTicTocToe from "@/libs/utils/checkTicTocToe";
+import PlayersCard from "./PlayersCard";
 
 const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tic-tac-toe`);
 export default function Tiles({
@@ -35,6 +36,10 @@ export default function Tiles({
   }, [gameCode]);
 
   const handleClick = (x: number, y: number) => {
+    if (winner) {
+      showToast("info", "Game Over");
+      return;
+    }
     if (playerTurn !== "defaultPlayerId") {
       if (playerTurn !== playerId) {
         showToast("info", "It is not your turn");
@@ -47,12 +52,13 @@ export default function Tiles({
         return;
       }
     }
-    setPlayerTurn("otherPlayer");
 
     setButtons((prev) => {
-      if (prev[x][y] !== "-") return prev;
+      if (prev[x][y] !== "-") {
+        showToast("info", "Tiles has content")
+        return prev;
+      }
 
-      // const newButtons = [...prev];
       const newButtons = prev.map((row) => [...row]);
       newButtons[x][y] = currentPlayer;
       socket.emit("makeMove", {
@@ -60,6 +66,7 @@ export default function Tiles({
         gameCode,
         newTiles: newButtons,
       });
+      setPlayerTurn("otherPlayer");
       return newButtons;
     });
   };
@@ -93,9 +100,8 @@ export default function Tiles({
           <Tile value={buttons[2][2]} handleClick={() => handleClick(2, 2)} />
         </div>
       </div>
-      {winner && (
-        <p>The Winner is: {winner}</p>
-      )}
+      <PlayersCard gameCode={gameCode} />
+      {winner && <p>The Winner is: {winner}</p>}
     </div>
   );
 }

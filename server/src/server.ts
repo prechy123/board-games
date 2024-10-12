@@ -7,7 +7,8 @@ import { Server } from "socket.io";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.js";
-import userRouter from "./routes/user.js"
+import userRouter from "./routes/user.js";
+import gameRouter from "./routes/game.js";
 import ChatNameSpace from "./sockets/chat.js";
 import mongoose from "mongoose";
 import { TicTacToeNameSpace } from "./sockets/game.js";
@@ -26,14 +27,15 @@ const corsOption = {
 };
 
 const app = express();
-app.use(express.json({limit: "50mb"}));
+app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
 app.use(cors(corsOption));
 
 // routes
 app.use("/auth", authRouter);
-app.use("/user", userRouter)
+app.use("/user", userRouter);
+app.use("/game", gameRouter);
 
 // sockets
 const server = http.createServer(app);
