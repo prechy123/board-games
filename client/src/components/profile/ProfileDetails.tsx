@@ -62,7 +62,7 @@ export default function ProfileDetails() {
             width={100}
             height={100}
             alt="New Profile Picture"
-            className=" rounded-full self-center"
+            className=" rounded-full w-[70px] h-[70px] object-cover self-center"
           />
           <input
             type="file"
