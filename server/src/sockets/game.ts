@@ -113,7 +113,6 @@ export function TicTacToeNameSpace(io: Server) {
       }) => {
         try {
           const game = await TicTacToe.findOne({ gameCode: data.gameCode });
-          console.log("data", data);
           if (!game) {
             socket.emit("error", "Game not found");
             return;
@@ -134,8 +133,8 @@ export function TicTacToeNameSpace(io: Server) {
           } else if (winner) {
             game.winner = data.playerId;
             await game.save();
-            socket.to(data.gameCode).emit("game-over", { winner });
-            socket.emit("game-over", { winner });
+            socket.to(data.gameCode).emit("game-over", { winner: data.playerId });
+            socket.emit("game-over", { winner: data.playerId });
           }
           await game.save();
 

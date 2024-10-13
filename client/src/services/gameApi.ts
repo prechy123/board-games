@@ -3,10 +3,12 @@ const BASE = "game";
 interface ITicTacToeRes {
   game: {
     player1: {
+      _id: string
       userName: string;
       profilePictureUrl: string;
     };
     player2: {
+      _id: string
       userName: string;
       profilePictureUrl: string;
     };

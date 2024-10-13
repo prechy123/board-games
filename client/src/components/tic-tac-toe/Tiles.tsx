@@ -6,7 +6,6 @@ import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import { RootState } from "@/types/user";
 import showToast from "@/libs/utils/showToast";
-import checkTicTocToe from "@/libs/utils/checkTicTocToe";
 import PlayersCard from "./PlayersCard";
 
 const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tic-tac-toe`);
@@ -26,10 +25,6 @@ export default function Tiles({
     ["-", "-", "-"],
   ]);
 
-  useEffect(() => {
-    const result = checkTicTocToe(buttons);
-    setWinner(result);
-  }, [buttons]);
 
   useEffect(() => {
     socket.emit("joinRoom", gameCode);
@@ -77,7 +72,8 @@ export default function Tiles({
     });
 
     socket.on("game-over", (data) => {
-      showToast("success", data);
+      setWinner(data.winner)
+      // showToast("success", data);
     });
   }, []);
 
@@ -100,8 +96,7 @@ export default function Tiles({
           <Tile value={buttons[2][2]} handleClick={() => handleClick(2, 2)} />
         </div>
       </div>
-      <PlayersCard gameCode={gameCode} />
-      {winner && <p>The Winner is: {winner}</p>}
+      <PlayersCard gameCode={gameCode} winner={winner} playerTurn={playerTurn} />
     </div>
   );
 }
