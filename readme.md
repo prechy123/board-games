@@ -25,7 +25,7 @@ mern-food-website/
 │   └── ...  
 ├── client/  
 │   └── ...  
-├── LICENSE
+├── LICENSE   
 └── readme.md  
 
 
