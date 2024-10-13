@@ -6,7 +6,6 @@ import showToast from "@/libs/utils/showToast";
 interface IPlayerCard {
   gameCode: string;
   winner: string;
-  playerTurn: string;
 }
 const PlayersCard = ({ gameCode, winner }: IPlayerCard) => {
   const [player1, setPlayer1] = useState({
