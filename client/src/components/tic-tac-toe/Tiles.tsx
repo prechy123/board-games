@@ -96,7 +96,7 @@ export default function Tiles({
           <Tile value={buttons[2][2]} handleClick={() => handleClick(2, 2)} />
         </div>
       </div>
-      <PlayersCard gameCode={gameCode} winner={winner} playerTurn={playerTurn} />
+      <PlayersCard gameCode={gameCode} winner={winner} />
     </div>
   );
 }

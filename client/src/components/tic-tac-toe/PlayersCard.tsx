@@ -8,7 +8,7 @@ interface IPlayerCard {
   winner: string;
   playerTurn: string;
 }
-const PlayersCard = ({ gameCode, winner, playerTurn }: IPlayerCard) => {
+const PlayersCard = ({ gameCode, winner }: IPlayerCard) => {
   const [player1, setPlayer1] = useState({
     _id: "1",
     userName: "-",
@@ -55,8 +55,8 @@ const PlayersCard = ({ gameCode, winner, playerTurn }: IPlayerCard) => {
           className=" rounded-full w-[70px] h-[70px] object-cover"
         />
         <p className=" text-center">{player1.userName}</p>
-        {playerTurn === player1._id && <span className=" w-full h-2 bg-slate-700 block"></span>}
-        {playerTurn === "defaultPlayerId" && <span className=" w-full h-2 bg-slate-700 block"></span>}
+        {/* {playerTurn === player1._id && <span className=" w-full h-2 bg-slate-700 block"></span>}
+        {playerTurn === "defaultPlayerId" && <span className=" w-full h-2 bg-slate-700 block"></span>} */}
       </div>
       <p className=" text-2xl font-bold">VS</p>
       <div>
@@ -68,7 +68,7 @@ const PlayersCard = ({ gameCode, winner, playerTurn }: IPlayerCard) => {
           className=" rounded-full w-[70px] h-[70px] object-cover"
         />
         <p className=" text-center">{player2.userName}</p>
-        {playerTurn === player2._id && <span className=" w-full h-2 bg-slate-700 block"></span>}
+        {/* {playerTurn === player2._id && <span className=" w-full h-2 bg-slate-700 block"></span>} */}
       </div>
     </div>
   );
