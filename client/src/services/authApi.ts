@@ -34,12 +34,14 @@ export const login = async (details: InputType) => {
     toast.dismiss(toastId);
     if (data.message === "User login successfully") {
       Cookies.set("user", JSON.stringify(data.user), {
+        path: "/",
         expires: 1,
         sameSite: "None",
         secure: true,
       });
       // convert to jwt later
       Cookies.set("id", data.user.playerId, {
+        path: "/",
         expires: 1,
         sameSite: "none",
         secure: true,
