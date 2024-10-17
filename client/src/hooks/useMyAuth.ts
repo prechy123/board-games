@@ -4,17 +4,13 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { isAuth } from "@/redux/reducers/authSlice";
-import { useRouter } from "next/navigation";
 import showToast from "@/libs/utils/showToast";
 
 export default function useMyAuth() {
   const dispatch = useDispatch();
-  const router = useRouter();
 
   useEffect(() => {
     const userCookie = Cookies.get("user");
-    const currentPath =
-      typeof window !== "undefined" ? window.location.pathname : "";
     if (userCookie) {
       const parsedUser = JSON.parse(userCookie);
       showToast("info", "User Connected");
@@ -27,9 +23,6 @@ export default function useMyAuth() {
           playerId: parsedUser.playerId,
         })
       );
-    } else if (currentPath !== "/sign-in" && currentPath !== "/sign-up") {
-      router.push("/sign-in");
-      showToast("info", "Sign in to continue");
     }
-  }, [dispatch, router]);
+  }, [dispatch]);
 }
