@@ -38,6 +38,7 @@ export default function SignInForm() {
         );
       }
       router.push("/");
+      router.refresh()
     }
   };
   return (

@@ -35,14 +35,12 @@ export const updateProfile = async (details: InputType) => {
     if (data.message === "User profile updated successfully") {
       showToast("success", data.message);
       Cookies.set("user", JSON.stringify(data.user), {
-        path: "/",
         expires: 1,
         sameSite: "None",
         secure: true,
       });
       // convert to jwt later
       Cookies.set("id", data.user.playerId, {
-        path: "/",
         expires: 1,
         sameSite: "none",
         secure: true,
