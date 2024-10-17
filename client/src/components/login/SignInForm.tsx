@@ -18,7 +18,9 @@ export default function SignInForm() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { handleSubmit, register } = useForm<Input>();
+  
   const handleLogIn: SubmitHandler<Input> = async (data) => {
+    if (data.email === "" || data.password === "") return showToast("error", "Email and Password not filled")
     const status = await api.login(data);
     if (status && status === "success") {
       const userCookie = Cookies.get("user");

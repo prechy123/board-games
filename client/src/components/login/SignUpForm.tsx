@@ -8,6 +8,9 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { isAuth } from "@/redux/reducers/authSlice";
 import showToast from "@/libs/utils/showToast";
+import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { userSchema } from "@/types/userSchema";
 
 type Input = {
   email: string;
@@ -17,7 +20,11 @@ type Input = {
 export default function SignUpForm() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { handleSubmit, register } = useForm<Input>();
+  const { handleSubmit, register, formState: {errors} } = useForm<Input>({resolver: zodResolver(userSchema)});
+  useEffect(()=> {
+    if (errors.email) showToast("error", errors.email.message)
+    if (errors.password) showToast("error", errors.password.message)
+  }, [errors])
   const handleRegistration: SubmitHandler<Input> = async (data) => {
     const status = await api.register(data);
     if (status && status === "success") {
