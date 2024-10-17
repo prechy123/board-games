@@ -3,7 +3,6 @@
 import AuthProvider from "./AuthProvider";
 import ThemeProvider from "./ThemeProvider";
 import ToastProvider from "./ToastProvider";
-import UserAuthProvider from "./UserAuthProvider";
 
 export default function AllProvider({
   children,
@@ -12,13 +11,11 @@ export default function AllProvider({
 }) {
   return (
       <AuthProvider>
-        <UserAuthProvider>
           <ThemeProvider>
             <ToastProvider>
               {children}
             </ToastProvider>
           </ThemeProvider>
-        </UserAuthProvider>
       </AuthProvider>
   );
 }
