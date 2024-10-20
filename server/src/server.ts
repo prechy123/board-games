@@ -21,7 +21,7 @@ cloudinary.config({
 });
 
 const corsOption = {
-  origin: process.env.BASE_URL,
+  origin: [process.env.BASE_URL, "http://localhost:8081"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
