@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/types/user";
 import showToast from "@/libs/utils/showToast";
 import PlayersCard from "./PlayersCard";
+import ChatBox from "../ChatBox";
 
 const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tic-tac-toe`);
 export default function Tiles({
@@ -24,7 +25,6 @@ export default function Tiles({
     ["-", "-", "-"],
     ["-", "-", "-"],
   ]);
-
 
   useEffect(() => {
     socket.emit("joinRoom", gameCode);
@@ -50,7 +50,7 @@ export default function Tiles({
 
     setButtons((prev) => {
       if (prev[x][y] !== "-") {
-        showToast("info", "Tiles has content")
+        showToast("info", "Tiles has content");
         return prev;
       }
 
@@ -72,7 +72,7 @@ export default function Tiles({
     });
 
     socket.on("game-over", (data) => {
-      setWinner(data.winner)
+      setWinner(data.winner);
       // showToast("success", data);
     });
   }, []);
@@ -97,6 +97,7 @@ export default function Tiles({
         </div>
       </div>
       <PlayersCard gameCode={gameCode} winner={winner} />
+      <ChatBox gameCode={gameCode} currentPlayer={currentPlayer} />
     </div>
   );
 }
