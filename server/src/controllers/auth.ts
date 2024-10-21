@@ -3,8 +3,9 @@ import * as authService from "../services/authService.js";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
+  const emailToFind = email.toLowerCase();
   try {
-    const result = await authService.register(email, password);
+    const result = await authService.register(emailToFind, password);
     if ("error" in result) {
       res.status(400).json({ message: result.error });
       return;
@@ -18,7 +19,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 export const login = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
   try {
-    const user = await authService.login(email, password);
+    const emailToFind = email.toLowerCase();
+    const user = await authService.login(emailToFind, password);
     if (!user) {
       res.status(400).json({ message: "Invalid credentials" });
       return;
@@ -51,8 +53,9 @@ export const forgetPassword = async (
   res: Response
 ): Promise<void> => {
   const { email } = req.body;
+  const emailToFind = email.toLowerCase();
   try {
-    const message = await authService.forgotPassword(email);
+    const message = await authService.forgotPassword(emailToFind);
     if (!message) {
       res.status(400).json({ message: "Invalid email address" });
       return;
