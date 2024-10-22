@@ -10,13 +10,19 @@ interface Chat {
 
 const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/chat`);
 
-export default function ChatBox({gameCode, currentPlayer} : {gameCode: string, currentPlayer: string}) {
+export default function ChatBox({
+  gameCode,
+  currentPlayer,
+}: {
+  gameCode: string;
+  currentPlayer: string;
+}) {
   const [open, setOpen] = useState(false);
   const { theme } = useTheme();
   const [chat, setChat] = useState<Chat[]>([]);
   const [message, setMessage] = useState("");
-  const lastMessageRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const lastMessageRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     socket.emit("joinRoom", gameCode);
@@ -25,26 +31,30 @@ export default function ChatBox({gameCode, currentPlayer} : {gameCode: string, c
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!message) {
-      inputRef.current?.focus()
-      return
+      inputRef.current?.focus();
+      return;
     }
-    setMessage("")
+    
+    setMessage("");
     setChat((prev) => [...prev, { sender: "Me", message }]);
-    socket.emit("sendMessage", {message, sender: currentPlayer, gameCode})
-    lastMessageRef.current?.scrollIntoView({behavior: "smooth"})
+    socket.emit("sendMessage", { message, sender: currentPlayer, gameCode });
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     socket.on("newMessage", (data) => {
-      if(data.sender !== currentPlayer) {
-        setChat((prev) => [...prev, {receiver: data.sender, message: data.message}])
-        lastMessageRef.current?.scrollIntoView({behavior: "smooth"})
+      if (data.sender !== currentPlayer) {
+        setChat((prev) => [
+          ...prev,
+          { receiver: data.sender, message: data.message },
+        ]);
+        lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
       }
-    })
+    });
     return () => {
-      socket.off("newMessage")
-    }
-  }, [currentPlayer])
+      socket.off("newMessage");
+    };
+  }, [currentPlayer]);
   return (
     <div
       className={`fixed right-0  w-[380px] transition-all duration-500 ease-in-out ${
@@ -78,11 +88,17 @@ export default function ChatBox({gameCode, currentPlayer} : {gameCode: string, c
       <div className=" h-[80vh] w-full bg-gray-300 dark:bg-gray-700 p-5">
         <div className=" h-[83%] bg-gray-800 dark:bg-gray-100 rounded-t-xl overflow-y-scroll p-2 scrollbar-hide pb-10">
           {chat.map((eachChat, index) => (
-            <div key={eachChat.message} ref={index === chat.length - 1 ? lastMessageRef : null}>
-              <p className={`text-gray-200 dark:text-gray-600 ${eachChat.sender === "Me" && "text-right"} mt-1`}>
+            <div
+              key={eachChat.message}
+              ref={index === chat.length - 1 ? lastMessageRef : null}
+            >
+              <p
+                className={`text-gray-200 dark:text-gray-600 ${
+                  eachChat.sender === "Me" && "text-right"
+                } mt-1`}
+              >
                 <p className=" inline-block bg-gray-300 text-black dark:text-white dark:bg-gray-700 p-1 rounded-md max-w-[80%] break-words">
-
-                {eachChat.message}
+                  {eachChat.message}
                 </p>
               </p>
             </div>

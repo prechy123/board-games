@@ -8,17 +8,15 @@ import clipboard from "@/libs/utils/clipboard";
 import * as motion from "framer-motion/client";
 import { useSearchParams } from "next/navigation";
 
-
-
 const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tic-tac-toe`);
 export default function TicTacToe({ params }: { params: Params }) {
   const { id } = params;
   const [roomFull, setRoomFull] = useState(false);
   const [currentPlayer, setCurrentPlayer] = useState("X");
-  const searchParams = useSearchParams()
-  const state = searchParams.get("state")
-  console.log(state)
-  
+  const searchParams = useSearchParams();
+  const state = searchParams.get("state");
+  console.log(state);
+
   useEffect(() => {
     socket.emit("joinRoom", id);
   }, [id]);
@@ -27,12 +25,11 @@ export default function TicTacToe({ params }: { params: Params }) {
     socket.emit("joinRoom", id);
     socket.on("playerJoined", (data) => {
       console.log("New player joined:", data);
-      setRoomFull(true)
-
+      setRoomFull(true);
     });
     if (state === "join") {
-      setCurrentPlayer("O")
-      setRoomFull(true)
+      setCurrentPlayer("O");
+      setRoomFull(true);
     }
 
     return () => {
