@@ -26,6 +26,7 @@ export default function Tiles({
     ["-", "-", "-"],
   ]);
 
+  
   useEffect(() => {
     socket.emit("joinRoom", gameCode);
   }, [gameCode]);
