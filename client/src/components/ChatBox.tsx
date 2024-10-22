@@ -34,7 +34,7 @@ export default function ChatBox({
       inputRef.current?.focus();
       return;
     }
-    
+
     setMessage("");
     setChat((prev) => [...prev, { sender: "Me", message }]);
     socket.emit("sendMessage", { message, sender: currentPlayer, gameCode });
@@ -57,7 +57,7 @@ export default function ChatBox({
   }, [currentPlayer]);
   return (
     <div
-      className={`fixed right-0  w-[380px] transition-all duration-500 ease-in-out ${
+      className={`fixed right-0 w-full sm:w-[380px] transition-all duration-500 ease-in-out ${
         open ? "bottom-0" : " -bottom-[76vh]"
       }`}
     >
@@ -104,8 +104,9 @@ export default function ChatBox({
             </div>
           ))}
         </div>
-        <div className=" h-[17%] bg-zinc-700 dark:bg-gray-100">
+        <div className=" h-[15%]">
           <form onSubmit={handleSendMessage}>
+            
             <div className="flex items-center py-2 rounded-t-lg bg-gray-300 dark:bg-gray-700">
               <textarea
                 id="chat"
