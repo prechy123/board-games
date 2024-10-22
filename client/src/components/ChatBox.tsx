@@ -1,5 +1,5 @@
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
 interface Chat {
@@ -15,6 +15,8 @@ export default function ChatBox({gameCode, currentPlayer} : {gameCode: string, c
   const { theme } = useTheme();
   const [chat, setChat] = useState<Chat[]>([]);
   const [message, setMessage] = useState("");
+  const lastMessageRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
     socket.emit("joinRoom", gameCode);
@@ -22,16 +24,27 @@ export default function ChatBox({gameCode, currentPlayer} : {gameCode: string, c
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!message) {
+      inputRef.current?.focus()
+      return
+    }
     setMessage("")
     setChat((prev) => [...prev, { sender: "Me", message }]);
     socket.emit("sendMessage", {message, sender: currentPlayer, gameCode})
+    lastMessageRef.current?.scrollIntoView({behavior: "smooth"})
   };
 
   useEffect(()=> {
     socket.on("newMessage", (data) => {
+      if(data.sender !== currentPlayer) {
         setChat((prev) => [...prev, {receiver: data.sender, message: data.message}])
+        lastMessageRef.current?.scrollIntoView({behavior: "smooth"})
+      }
     })
-  }, [])
+    return () => {
+      socket.off("newMessage")
+    }
+  }, [currentPlayer])
   return (
     <div
       className={`fixed right-0  w-[380px] transition-all duration-500 ease-in-out ${
@@ -63,14 +76,14 @@ export default function ChatBox({gameCode, currentPlayer} : {gameCode: string, c
         </p>
       </div>
       <div className=" h-[80vh] w-full bg-gray-300 dark:bg-gray-700 p-5">
-        <div className=" h-[83%] bg-gray-800 dark:bg-gray-100 rounded-t-xl">
-          {chat.map((eachChat) => (
-            <div key={eachChat.message}>
-              <p className="text-gray-200 dark:text-gray-600">
-                {eachChat.sender || eachChat.receiver}
-              </p>
-              <p className="text-gray-200 dark:text-gray-600">
+        <div className=" h-[83%] bg-gray-800 dark:bg-gray-100 rounded-t-xl overflow-y-scroll p-2 scrollbar-hide pb-10">
+          {chat.map((eachChat, index) => (
+            <div key={eachChat.message} ref={index === chat.length - 1 ? lastMessageRef : null}>
+              <p className={`text-gray-200 dark:text-gray-600 ${eachChat.sender === "Me" && "text-right"} mt-1`}>
+                <p className=" inline-block bg-gray-300 text-black dark:text-white dark:bg-gray-700 p-1 rounded-md max-w-[80%] break-words">
+
                 {eachChat.message}
+                </p>
               </p>
             </div>
           ))}
@@ -85,6 +98,7 @@ export default function ChatBox({gameCode, currentPlayer} : {gameCode: string, c
                 placeholder="Your message..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
+                ref={inputRef}
               ></textarea>
               <button
                 type="submit"
