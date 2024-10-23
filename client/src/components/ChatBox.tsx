@@ -24,6 +24,8 @@ export default function ChatBox({
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  const [newMessage, setNewMessage] = useState(false)
+
   useEffect(() => {
     socket.emit("joinRoom", gameCode);
   }, [gameCode]);
@@ -40,7 +42,11 @@ export default function ChatBox({
     socket.emit("sendMessage", { message, sender: currentPlayer, gameCode });
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
+  useEffect(() => {
+    if (open) {
+      setNewMessage(false)
+    }
+  }, [open, newMessage])
   useEffect(() => {
     socket.on("newMessage", (data) => {
       if (data.sender !== currentPlayer) {
@@ -49,6 +55,7 @@ export default function ChatBox({
           { receiver: data.sender, message: data.message },
         ]);
         lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+        setNewMessage(true)
       }
     });
     return () => {
@@ -62,7 +69,7 @@ export default function ChatBox({
       }`}
     >
       <div
-        className=" flex justify-between items-center bg-gray-300 dark:bg-gray-700 p-2 rounded-t-xl cursor-pointer"
+        className=" flex justify-between items-center bg-gray-300 dark:bg-gray-700 p-2 rounded-t-xl cursor-pointer relative"
         onClick={() => setOpen(!open)}
       >
         <h2>Chat Room</h2>
@@ -84,12 +91,16 @@ export default function ChatBox({
             />
           </svg>
         </p>
+        {newMessage && (
+
+          <div className=" absolute right-0 -top-1 w-2 h-2 bg-green-600 rounded-full"></div>
+        )}
       </div>
       <div className=" h-[80vh] w-full bg-gray-300 dark:bg-gray-700 p-5">
         <div className=" h-[83%] bg-gray-800 dark:bg-gray-100 rounded-t-xl overflow-y-scroll p-2 scrollbar-hide pb-10">
           {chat.map((eachChat, index) => (
             <div
-              key={eachChat.message}
+              key={index}
               ref={index === chat.length - 1 ? lastMessageRef : null}
             >
               <p
