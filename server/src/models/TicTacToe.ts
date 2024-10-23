@@ -14,7 +14,12 @@ const TicTacToeSchema: Schema<ITacTacToe> = new Schema({
   },
   playerTurn: Schema.Types.ObjectId,
   winner: { type: Schema.Types.ObjectId, default: null },
-  gameCode: String
+  gameCode: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    expires: 3600
+  }
 });
 
 export default mongoose.model<ITacTacToe>("TicTacToe", TicTacToeSchema);

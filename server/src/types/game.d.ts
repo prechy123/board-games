@@ -8,4 +8,5 @@ export interface ITacTacToe extends Document {
   playerTurn: Types.ObjectId;
   winner: Types.ObjectId | null;
   gameCode: string;
+  createdAt: Date
 }
